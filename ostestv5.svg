@@ -1,0 +1,1587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100%" height="100%" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">
+  <foreignObject width="100%" height="100%" x="0" y="0">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Unknowns OS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+           :root {
+    --bg: #020403;
+    --bg-alt: #050908;
+    --accent: #00ff6a;
+    --accent-soft: #0f3b24;
+    --accent-bright: #7dffb8;
+    --text: #ffffff;
+    --muted: #c5d0c9;
+    --danger: #ff4b4b;
+    --window-header: #050b09;
+    --taskbar: #050806;
+    --border: #1f2a23;
+    --shadow: 0 0 24px rgba(0, 0, 0, 0.9);
+    --radius: 12px;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  body {
+    background: radial-gradient(circle at top, #0a1f14 0, #020403 45%, #000 100%);
+    color: var(--text);
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  /* LOADING SCREEN -------------------------------------------------------- */
+  #loading-screen {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, #07140e 0, #020403 55%, #000 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 26px;
+    z-index: 9999;
+    overflow: hidden;
+    transition: opacity 0.4s ease, filter 0.4s ease;
+  }
+
+  #loading-screen.fade-out {
+    opacity: 0;
+    filter: blur(4px);
+  }
+
+  .loading-reactor {
+    position: relative;
+    width: min(260px, 60vw);
+    height: min(260px, 60vw);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 255, 106, 0.7);
+    box-shadow: 0 0 18px rgba(0, 255, 106, 0.7);
+    border-top-color: var(--accent-bright);
+    border-bottom-color: rgba(0, 255, 106, 0.3);
+    border-left-color: rgba(0, 255, 106, 0.4);
+    border-right-color: rgba(0, 255, 106, 0.9);
+  }
+
+  .ring.outer {
+    width: 100%;
+    height: 100%;
+    animation: spin-slow 9s linear infinite;
+  }
+
+  .ring.middle {
+    width: 70%;
+    height: 70%;
+    animation: spin-medium 6s linear infinite reverse;
+  }
+
+  .ring.inner {
+    width: 40%;
+    height: 40%;
+    animation: spin-fast 3s linear infinite;
+  }
+
+  .reactor-core {
+    width: 26%;
+    height: 26%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffffff 0, #b4ffda 25%, #00ff6a 55%, rgba(0, 0, 0, 0) 70%);
+    box-shadow: 0 0 28px rgba(0, 255, 106, 0.9);
+    animation: core-pulse 1.5s ease-in-out infinite;
+  }
+
+  .reactor-pulse {
+    position: absolute;
+    width: 20%;
+    height: 20%;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 255, 106, 0.4);
+    animation: pulse-wave 1.5s ease-out infinite;
+  }
+
+  .loading-logo {
+    font-size: 2.2rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 0 0 18px rgba(255, 255, 255, 0.7), 0 0 28px rgba(0, 255, 106, 0.9);
+  }
+
+  .loading-sub {
+    font-size: 0.95rem;
+    color: var(--accent-bright);
+    text-shadow: 0 0 10px rgba(0, 255, 106, 0.7);
+    min-height: 1.2em;
+  }
+
+  .loading-log {
+    font-size: 0.8rem;
+    color: var(--muted);
+    opacity: 0.8;
+  }
+
+  .loading-bar {
+    width: min(280px, 70vw);
+    height: 7px;
+    border-radius: 999px;
+    background: #050806;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 255, 106, 0.3);
+  }
+
+  .loading-bar-inner {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #00ff6a, #b4ffda, #00ff6a);
+    animation: loading 5s linear forwards;
+  }
+
+  .loading-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 999px;
+    opacity: 0.4;
+    animation: float-up 4s linear infinite;
+  }
+
+  @keyframes spin-slow {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes spin-medium {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes spin-fast {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes core-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 22px rgba(0, 255, 106, 0.7); }
+    50% { transform: scale(1.08); box-shadow: 0 0 34px rgba(0, 255, 106, 1); }
+  }
+  @keyframes pulse-wave {
+    0% { transform: scale(1); opacity: 0.9; }
+    100% { transform: scale(3.2); opacity: 0; }
+  }
+  @keyframes loading {
+    to { width: 100%; }
+  }
+  @keyframes float-up {
+    0% { transform: translateY(100%); opacity: 0; }
+    20% { opacity: 0.5; }
+    80% { opacity: 0.5; }
+    100% { transform: translateY(-20%); opacity: 0; }
+  }
+
+  /* DESKTOP --------------------------------------------------------------- */
+  #desktop {
+    position: fixed;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  #desktop.visible {
+    opacity: 1;
+  }
+
+  #desktop::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at top left, rgba(0, 255, 106, 0.12), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(0, 255, 106, 0.08), transparent 60%);
+    mix-blend-mode: screen;
+    opacity: 0.9;
+  }
+
+  .desktop-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  .center-widgets {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 26px;
+    border-radius: 20px;
+    background: rgba(2, 4, 3, 0.9);
+    border: 1px solid rgba(0, 255, 106, 0.5);
+    box-shadow:
+      0 0 26px rgba(0, 255, 106, 0.35),
+      0 0 40px rgba(0, 255, 106, 0.25);
+    max-width: 90vw;
+    text-align: center;
+  }
+
+  .center-time {
+    font-size: clamp(2.4rem, 6.5vw, 3.2rem);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    text-shadow:
+      0 0 14px rgba(255, 255, 255, 0.7),
+      0 0 20px rgba(0, 255, 106, 0.7);
+  }
+
+  .center-date {
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  .center-weather {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6px;
+  }
+
+  .weather-main {
+    font-size: 1.1rem;
+    color: var(--accent-bright);
+  }
+
+  .weather-temp {
+    font-size: 1.1rem;
+    color: #ffffff;
+  }
+
+  .weather-extra {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .center-views {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: var(--accent-bright);
+    text-shadow: 0 0 10px rgba(0, 255, 106, 0.6);
+  }
+
+  .windows-area {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .window {
+    position: absolute;
+    top: 12%;
+    left: 10%;
+    width: min(720px, 92vw);
+    height: min(440px, 72vh);
+    background: radial-gradient(circle at top left, #07140e 0, #020403 55%);
+    border-radius: var(--radius);
+    border: 1px solid rgba(0, 255, 106, 0.6);
+    box-shadow:
+      0 0 26px rgba(0, 255, 106, 0.35),
+      0 0 40px rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .window.hidden {
+    display: none;
+  }
+
+  .window-header {
+    height: 36px;
+    background: linear-gradient(90deg, #050b09, #07140e);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 8px;
+    cursor: default;
+    border-bottom: 1px solid rgba(0, 255, 106, 0.4);
+    box-shadow: 0 2px 10px rgba(0, 255, 106, 0.25);
+  }
+
+  .window-title {
+    font-size: 0.9rem;
+    color: #ffffff;
+    flex: 1;
+  }
+
+  .window-controls {
+    display: flex;
+    gap: 6px;
+  }
+
+  .window-btn {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #ffffff;
+    font-size: 0.8rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.15s ease;
+  }
+
+  .window-btn:hover {
+    border-color: rgba(0, 255, 106, 0.7);
+    background: rgba(0, 255, 106, 0.16);
+    box-shadow: 0 0 10px rgba(0, 255, 106, 0.7);
+  }
+
+  .btn-close:hover {
+    border-color: rgba(255, 75, 75, 0.9);
+    background: rgba(255, 75, 75, 0.18);
+    box-shadow: 0 0 10px rgba(255, 75, 75, 0.9);
+  }
+
+  .window-body {
+    flex: 1;
+    padding: 10px;
+    overflow: auto;
+    font-size: 0.9rem;
+    color: #ffffff;
+  }
+
+  .settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .settings-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .settings-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .settings-input {
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: #020403;
+    color: var(--text);
+    font-size: 0.85rem;
+    min-width: 180px;
+  }
+
+  .settings-button {
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 255, 106, 0.7);
+    background: rgba(0, 255, 106, 0.16);
+    color: var(--accent-bright);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.15s ease;
+  }
+
+  .settings-button:hover {
+    background: rgba(0, 255, 106, 0.24);
+    box-shadow: 0 0 12px rgba(0, 255, 106, 0.7);
+  }
+
+  .calc-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+  }
+
+  .calc-mode-toggle {
+    display: flex;
+    gap: 6px;
+  }
+
+  .calc-mode-btn {
+    flex: 1;
+    padding: 6px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: #020403;
+    color: var(--muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.15s ease;
+  }
+
+  .calc-mode-btn.active {
+    border-color: rgba(0, 255, 106, 0.7);
+    color: var(--accent-bright);
+    background: rgba(0, 255, 106, 0.16);
+    box-shadow: 0 0 10px rgba(0, 255, 106, 0.6);
+  }
+
+  .calc-display {
+    background: #020403;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 106, 0.6);
+    padding: 10px;
+    text-align: right;
+    font-size: 1.4rem;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    word-wrap: break-word;
+    color: #ffffff;
+    box-shadow: 0 0 16px rgba(0, 255, 106, 0.4);
+  }
+
+  .calc-keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    flex: 1;
+  }
+
+  .calc-btn {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #050806;
+    color: var(--text);
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.12s ease;
+  }
+
+  .calc-btn.op {
+    color: var(--accent-bright);
+  }
+
+  .calc-btn.equal {
+    background: var(--accent-soft);
+    color: var(--accent-bright);
+    border-color: rgba(0, 255, 106, 0.7);
+  }
+
+  .calc-btn.small {
+    font-size: 0.8rem;
+  }
+
+  .calc-btn:hover {
+    background: rgba(0, 255, 106, 0.2);
+    border-color: rgba(0, 255, 106, 0.7);
+    box-shadow: 0 0 10px rgba(0, 255, 106, 0.6);
+  }
+
+  .taskbar {
+    height: 54px;
+    background: linear-gradient(90deg, #050806, #050b09);
+    border-top: 1px solid rgba(0, 255, 106, 0.6);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 10px;
+    box-shadow:
+      0 -4px 18px rgba(0, 0, 0, 0.8),
+      0 0 20px rgba(0, 255, 106, 0.4);
+    position: relative;
+    z-index: 2;
+  }
+
+  .taskbar-left,
+  .taskbar-center,
+  .taskbar-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .taskbar-left {
+    gap: 8px;
+  }
+
+  .taskbar-center {
+    flex: 1;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .taskbar-right {
+    gap: 12px;
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .taskbar-logo {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background: radial-gradient(circle at top left, #00ff6a, #020403);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #020403;
+    box-shadow: 0 0 16px rgba(0, 255, 106, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .taskbar-app {
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text);
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: 0.15s ease;
+  }
+
+  .taskbar-app span.icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    background: rgba(0, 255, 106, 0.2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: var(--accent-bright);
+    box-shadow: 0 0 10px rgba(0, 255, 106, 0.6);
+  }
+
+  .taskbar-app.active,
+  .taskbar-app:hover {
+    background: rgba(0, 255, 106, 0.2);
+    border-color: rgba(0, 255, 106, 0.7);
+    box-shadow: 0 0 12px rgba(0, 255, 106, 0.7);
+  }
+
+  .taskbar-clock {
+    font-size: 0.85rem;
+    color: #ffffff;
+  }
+
+  .taskbar-battery {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .battery-icon {
+    width: 20px;
+    height: 10px;
+    border-radius: 2px;
+    border: 1px solid var(--muted);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .battery-icon::after {
+    content: "";
+    position: absolute;
+    right: -3px;
+    top: 2px;
+    width: 3px;
+    height: 6px;
+    border-radius: 1px;
+    background: var(--muted);
+  }
+
+  .battery-level {
+    height: 100%;
+    width: 60%;
+    background: var(--accent);
+  }
+
+  @media (max-width: 600px) {
+    .window {
+      top: 8%;
+      left: 5%;
+      width: 90%;
+      height: 70%;
+    }
+
+    .taskbar {
+      height: 50px;
+      padding: 0 6px;
+    }
+
+    .taskbar-app span.label {
+      display: none;
+    }
+
+    .taskbar-app {
+      padding-inline: 8px;
+    }
+
+    .center-widgets {
+      padding: 16px 18px;
+    }
+  }
+  
+  @keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+        </style>
+      </head>
+      <body>
+      <!-- LOADING SCREEN -->
+  <div id="loading-screen">
+    <div class="loading-reactor">
+      <div class="ring outer"></div>
+      <div class="ring middle"></div>
+      <div class="ring inner"></div>
+      <div class="reactor-core"></div>
+      <div class="reactor-pulse"></div>
+      <div class="loading-particles" id="loading-particles"></div>
+    </div>
+    <div class="loading-logo">Unknowns OS</div>
+    <div class="loading-sub" id="loading-subtext">Initializing Unknowns Engine...</div>
+    <div class="loading-log" id="loading-log">Boot sequence started...</div>
+    <div class="loading-bar">
+      <div class="loading-bar-inner"></div>
+    </div>
+  </div>
+
+  <!-- DESKTOP -->
+  <div id="desktop">
+    <div class="desktop-inner">
+      <!-- Center widgets -->
+      <div class="center-widgets">
+        <div class="center-time" id="center-time">--:-- --</div>
+        <div class="center-date" id="center-date">Loading date...</div>
+        <div class="center-weather">
+          <div class="weather-main" id="weather-main"></div>
+          <div class="weather-temp" id="weather-temp"></div>
+          <div class="weather-extra" id="weather-extra"></div>
+        </div>
+        <div class="center-views" id="center-views">Views: --</div>
+        <div id="announcement-bar" style="
+  margin-top: 10px;
+  padding: 10px 16px;
+  background: rgba(0, 255, 106, 0.12);
+  border: 1px solid rgba(0, 255, 106, 0.5);
+  border-radius: 12px;
+  box-shadow: 0 0 14px rgba(0,255,106,0.4);
+  color: #b4ffda;
+  font-size: 0.9rem;
+  text-align: center;
+  max-width: 90vw;
+  display: none;
+  position: relative;
+  animation: slideDown 0.4s ease forwards;
+">
+  <span id="announcement-text">Welcome to Unknowns OS — The Release Update!</span>
+
+
+</div>
+
+      </div>
+
+      <!-- Windows area -->
+      <div class="windows-area">
+<!-- Arcade window -->
+<div class="window hidden" id="win-arcade" data-app="arcade">
+  <div class="window-header">
+    <div class="window-title">Arcade</div>
+    <div class="window-controls">
+      <button class="window-btn btn-minimize" data-action="minimize">—</button>
+      <button class="window-btn btn-maximize" data-action="maximize">□</button>
+      <button class="window-btn btn-close" data-action="close">×</button>
+    </div>
+  </div>
+
+  <div class="window-body" style="padding:0; overflow:hidden;">
+    <iframe
+      src="https://cdn.jsdelivr.net/gh/unknownsowner/OSArcade@main/OSArcadeApp.svg"
+      style="
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: transparent;
+      "
+    ></iframe>
+  </div>
+</div>
+
+        <!-- Partners window -->
+        <div class="window hidden" id="win-partners" data-app="partners">
+          <div class="window-header">
+            <div class="window-title">Partners</div>
+            <div class="window-controls">
+              <button class="window-btn btn-minimize" data-action="minimize">—</button>
+              <button class="window-btn btn-maximize" data-action="maximize">□</button>
+              <button class="window-btn btn-close" data-action="close">×</button>
+            </div>
+          </div>
+          <div class="window-body">
+            <p>Partners app placeholder. </p>
+          </div>
+        </div>
+
+<!-- Forms window -->
+<div class="window hidden" id="win-forms" data-app="forms">
+  <div class="window-header">
+    <div class="window-title">Forms</div>
+    <div class="window-controls">
+      <button class="window-btn btn-minimize" data-action="minimize">—</button>
+      <button class="window-btn btn-maximize" data-action="maximize">□</button>
+      <button class="window-btn btn-close" data-action="close">×</button>
+    </div>
+  </div>
+
+  <div class="window-body" style="padding:0; overflow:hidden;">
+
+    <!-- ⭐ DROP-IN FORMS APP STARTS HERE ⭐ -->
+    <div class="forms-app" style="width:100%; height:100%; overflow:hidden; position:relative; background:#000;">
+
+      <!-- PARALLAX SCENE -->
+      <div class="scene" id="forms-scene" style="
+          position:absolute; inset:0;
+          transform-style:preserve-3d;
+          transition:transform 0.1s linear;
+          overflow:hidden;
+      "></div>
+
+      <!-- CENTERED CONTENT -->
+      <div class="center-wrapper" style="
+          position:absolute; top:50%; left:50%;
+          transform:translate(-50%, -50%);
+          text-align:center; z-index:10;
+      ">
+        <div class="title" style="
+            font-size:40px; font-weight:bold;
+            color:#00ff44;
+            text-shadow:0 0 15px #00ff44, 0 0 25px #00ff44;
+            margin-bottom:25px;
+        ">
+          Unknowns Realms Forms
+        </div>
+
+        <div class="icon-grid" style="display:flex; gap:20px; justify-content:center;">
+
+          <!-- FEEDBACK -->
+          <div class="icon" data-title="Feedback Form"
+              data-desc="Fill out this form if you would like to make a feedback."
+              data-link="https://forms.gle/X4t8VzbfK2gaTd6XA"
+              style="
+                  width:150px; height:70px;
+                  background:#000;
+                  border:2px solid #00ff44;
+                  border-radius:10px;
+                  box-shadow:0 0 12px #00ff44;
+                  display:flex; justify-content:center; align-items:center;
+                  cursor:pointer; transition:0.15s ease;
+              ">
+            <span style="color:#00ff44; font-size:18px; font-weight:bold; text-shadow:0 0 10px #00ff44;">
+              Feedback
+            </span>
+          </div>
+
+          <!-- PARTNERS -->
+          <div class="icon" data-title="Partners Form"
+              data-desc="Fill out this form if you would like to partner with us."
+              data-link="https://forms.gle/n1ERwK4VoFhjQEEg9"
+              style="
+                  width:150px; height:70px;
+                  background:#000;
+                  border:2px solid #00ff44;
+                  border-radius:10px;
+                  box-shadow:0 0 12px #00ff44;
+                  display:flex; justify-content:center; align-items:center;
+                  cursor:pointer; transition:0.15s ease;
+              ">
+            <span style="color:#00ff44; font-size:18px; font-weight:bold; text-shadow:0 0 10px #00ff44;">
+              Partners
+            </span>
+          </div>
+
+          <!-- QUESTIONS -->
+          <div class="icon" data-title="Questions Form"
+              data-desc="Fill out this form if you would like to ask a question."
+              data-link="https://forms.gle/PvEamJxx63ctFg1n6"
+              style="
+                  width:150px; height:70px;
+                  background:#000;
+                  border:2px solid #00ff44;
+                  border-radius:10px;
+                  box-shadow:0 0 12px #00ff44;
+                  display:flex; justify-content:center; align-items:center;
+                  cursor:pointer; transition:0.15s ease;
+              ">
+            <span style="color:#00ff44; font-size:18px; font-weight:bold; text-shadow:0 0 10px #00ff44;">
+              Questions
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MODAL -->
+      <div id="forms-modal-bg" style="
+          position:absolute; inset:0;
+          backdrop-filter:blur(10px);
+          background:rgba(0,0,0,0.6);
+          display:none;
+          justify-content:center; align-items:center;
+          z-index:20;
+      ">
+        <div id="forms-modal" style="
+            width:420px; padding:20px;
+            background:#000;
+            border:2px solid #00ff44;
+            border-radius:12px;
+            box-shadow:0 0 20px #00ff44;
+            transform:scale(0.6);
+            opacity:0;
+            transition:0.25s ease;
+            text-align:center;
+        ">
+          <div id="forms-modal-title" style="
+              font-size:26px; font-weight:bold;
+              color:#00ff44; text-shadow:0 0 12px #00ff44;
+              margin-bottom:10px;
+          "></div>
+
+          <div id="forms-modal-desc" style="
+              font-size:17px; color:white;
+              text-shadow:0 0 8px white;
+              margin-bottom:20px;
+          "></div>
+
+          <a id="forms-modal-button" href="#" target="_blank" style="
+              display:inline-block;
+              padding:10px 22px;
+              font-size:18px; font-weight:bold;
+              color:#00ff44; text-decoration:none;
+              border:2px solid #00ff44;
+              border-radius:8px;
+              box-shadow:0 0 15px #00ff44;
+              transition:0.2s ease;
+          ">Open Form</a>
+        </div>
+      </div>
+
+    </div>
+    <!-- ⭐ DROP-IN FORMS APP ENDS HERE ⭐ -->
+
+  </div>
+</div>
+
+        <script>
+
+
+document.addEventListener("mousemove", e => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * -20;
+    scene.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+});
+
+/* MODAL */
+const modalBG = document.getElementById("forms-modal-bg");
+const modal = document.getElementById("forms-modal");
+const modalTitle = document.getElementById("forms-modal-title");
+const modalDesc = document.getElementById("forms-modal-desc");
+const modalButton = document.getElementById("forms-modal-button");
+
+document.querySelectorAll(".icon").forEach(icon => {
+    icon.addEventListener("click", () => {
+        modalTitle.textContent = icon.dataset.title;
+        modalDesc.textContent = icon.dataset.desc;
+        modalButton.href = icon.dataset.link;
+
+        modalBG.style.display = "flex";
+        setTimeout(() => modal.style.transform = "scale(1)", 10);
+        setTimeout(() => modal.style.opacity = "1", 10);
+    });
+});
+
+modalBG.addEventListener("click", e => {
+    if (e.target === modalBG) {
+        modal.style.transform = "scale(0.6)";
+        modal.style.opacity = "0";
+        setTimeout(() => modalBG.style.display = "none", 200);
+    }
+});
+</script>
+
+
+<!-- Settings window -->
+<div class="window hidden" id="win-settings" data-app="settings">
+  <div class="window-header">
+    <div class="window-title">Settings</div>
+    <div class="window-controls">
+      <button class="window-btn btn-minimize" data-action="minimize">—</button>
+      <button class="window-btn btn-maximize" data-action="maximize">□</button>
+      <button class="window-btn btn-close" data-action="close">×</button>
+    </div>
+  </div>
+
+  <div class="window-body">
+
+    <!-- Wallpaper Section -->
+    <div class="settings-section">
+      <h3>Wallpaper</h3>
+
+      <div class="settings-row">
+        <span class="settings-label">Image URL</span>
+        <input id="wallpaper-url" class="settings-input" type="text" placeholder="Paste image URL..." />
+        <button class="settings-button" id="apply-wallpaper">Apply</button>
+      </div>
+
+      <div class="settings-row">
+        <span class="settings-label">Preset</span>
+        <button class="settings-button" data-wallpaper="default">Default</button>
+        <button class="settings-button" data-wallpaper="grid">Green Grid</button>
+        <button class="settings-button" data-wallpaper="dark">Deep Space</button>
+      </div>
+
+      <p class="settings-label">
+        More customization options can be added later (themes, accent strength, etc.).
+      </p>
+    </div>
+
+    <!-- Utilities Section -->
+    <div class="settings-section">
+      <h3>Utilities</h3>
+
+      <div class="settings-row">
+        <button class="settings-button" onclick="tabCloak()">Tab Cloak</button>
+      </div>
+
+      <div class="settings-row">
+        <button class="settings-button" onclick="downloadOS()">Download OS</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- REQUIRED JS -->
+<script>
+function tabCloak() {
+  const win = window.open("about:blank", "_blank");
+  win.document.open();
+  win.document.write(document.documentElement.outerHTML);
+  win.document.close();
+}
+
+function downloadOS() {
+  const code = document.documentElement.outerHTML;
+  const blob = new Blob([code], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "UnknownsOS.html";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+</script>
+
+
+        <!-- Calculator window -->
+        <div class="window hidden" id="win-calculator" data-app="calculator">
+          <div class="window-header">
+            <div class="window-title">Calculator</div>
+            <div class="window-controls">
+              <button class="window-btn btn-minimize" data-action="minimize">—</button>
+              <button class="window-btn btn-maximize" data-action="maximize">□</button>
+              <button class="window-btn btn-close" data-action="close">×</button>
+            </div>
+          </div>
+          <div class="window-body">
+            <div class="calc-container">
+              <div class="calc-mode-toggle">
+                <button class="calc-mode-btn" data-mode="basic">Normal</button>
+                <button class="calc-mode-btn" data-mode="scientific">Scientific</button>
+              </div>
+              <div class="calc-display" id="calc-display">0</div>
+              <div class="calc-keypad" id="calc-keypad"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TASKBAR -->
+    <div class="taskbar">
+      <div class="taskbar-left">
+        <div class="taskbar-logo">UO</div>
+      </div>
+      <div class="taskbar-center">
+        <button class="taskbar-app" data-open="arcade">
+          <span class="icon">A</span><span class="label">Arcade</span>
+        </button>
+        <button class="taskbar-app" data-open="partners">
+          <span class="icon">P</span><span class="label">Partners</span>
+        </button>
+        <button class="taskbar-app" data-open="forms">
+          <span class="icon">F</span><span class="label">Forms</span>
+        </button>
+        <button class="taskbar-app" data-open="settings">
+          <span class="icon">S</span><span class="label">Settings</span>
+        </button>
+        <button class="taskbar-app" data-open="calculator">
+          <span class="icon">C</span><span class="label">Calculator</span>
+        </button>
+      </div>
+      <div class="taskbar-right">
+        <div class="taskbar-battery">
+          <div class="battery-icon">
+            <div class="battery-level" id="battery-level"></div>
+          </div>
+          <span id="battery-percent">--%</span>
+        </div>
+        <div class="taskbar-clock" id="taskbar-time">--:-- --</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+
+
+  // --- Loading text sequence ---
+  const loadingSub = document.getElementById("loading-subtext");
+  const loadingLog = document.getElementById("loading-log");
+  const loadingSteps = [
+    "Initializing Unknowns Engine...",
+    "Charging Neon Core...",
+    "Syncing UI Modules...",
+    "Preparing Environment...",
+    "Starting Unknowns OS..."
+  ];
+  const logSteps = [
+    "Boot sequence started...",
+    "Core voltage stable.",
+    "UI modules verified.",
+    "Environment variables loaded.",
+    "Handing off to Unknowns OS..."
+  ];
+  let stepIndex = 0;
+  const stepInterval = setInterval(() => {
+    if (stepIndex < loadingSteps.length) {
+      loadingSub.textContent = loadingSteps[stepIndex];
+      loadingLog.textContent = logSteps[stepIndex];
+      stepIndex++;
+    } else {
+      clearInterval(stepInterval);
+    }
+  }, 900);
+
+  // --- Finish loading after 5s with smooth transition ---
+  const loadingScreen = document.getElementById("loading-screen");
+  const desktop = document.getElementById("desktop");
+
+  setTimeout(() => {
+    loadingScreen.classList.add("fade-out");
+    setTimeout(() => {
+      loadingScreen.style.display = "none";
+      desktop.style.display = "flex";
+      requestAnimationFrame(() => {
+        desktop.classList.add("visible");
+      });
+    }, 400);
+  }, 5000);
+
+  // --- Time & date (12-hour) ---
+  function formatTime12(date) {
+    let h = date.getHours();
+    const m = date.getMinutes().toString().padStart(2, "0");
+    const ampm = h >= 12 ? "PM" : "AM";
+    h = h % 12;
+    if (h === 0) h = 12;
+    return `${h}:${m} ${ampm}`;
+  }
+
+  function updateTime() {
+    const now = new Date();
+    const timeStr = formatTime12(now);
+    const dateStr = now.toLocaleDateString(undefined, {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    });
+    document.getElementById("center-time").textContent = timeStr;
+    document.getElementById("center-date").textContent = dateStr;
+    document.getElementById("taskbar-time").textContent = timeStr;
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+
+  // --- Fake weather ---
+  const weatherOptions = [
+    { main: "Sunny", temp: "86°F", extra: "Clear skies" },
+    { main: "Partly Cloudy", temp: "79°F", extra: "Light breeze" },
+    { main: "Cloudy", temp: "73°F", extra: "Calm" },
+    { main: "Stormy", temp: "70°F", extra: "Thunder nearby" }
+  ];
+  const w = weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
+  document.getElementById("weather-main").textContent = w.main;
+  document.getElementById("weather-temp").textContent = w.temp;
+  document.getElementById("weather-extra").textContent = "Palm Springs • " + w.extra;
+
+  // --- Fake battery ---
+  const batteryPercent = Math.floor(40 + Math.random() * 60);
+  document.getElementById("battery-percent").textContent = batteryPercent + "%";
+  document.getElementById("battery-level").style.width = batteryPercent + "%";
+
+  // --- View Counter (Saved) ---
+  (function handleViewCounter() {
+    let views = localStorage.getItem("uo_view_count");
+    if (!views) {
+      views = 1;
+    } else {
+      views = parseInt(views) + 1;
+    }
+    localStorage.setItem("uo_view_count", views);
+    document.getElementById("center-views").textContent = "Views: " + views;
+  })();
+
+  // --- Taskbar app opening / window management ---
+  const appButtons = document.querySelectorAll(".taskbar-app");
+  const windows = document.querySelectorAll(".window");
+
+  function bringToFront(win) {
+    let maxZ = 10;
+    windows.forEach(w => {
+      const z = parseInt(window.getComputedStyle(w).zIndex) || 10;
+      if (z > maxZ) maxZ = z;
+    });
+    win.style.zIndex = maxZ + 1;
+  }
+
+  function openApp(appName) {
+    windows.forEach(win => {
+      if (win.dataset.app === appName) {
+        win.classList.remove("hidden");
+        bringToFront(win);
+      }
+    });
+    appButtons.forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.open === appName);
+    });
+  }
+
+  appButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const app = btn.dataset.open;
+      const win = document.querySelector(`.window[data-app="${app}"]`);
+      if (win.classList.contains("hidden")) {
+        openApp(app);
+      } else {
+        bringToFront(win);
+      }
+    });
+  });
+
+  // --- Window controls (true fullscreen, default positions) ---
+  windows.forEach(win => {
+    const controls = win.querySelectorAll(".window-btn");
+    let savedBounds = null;
+    let isFullscreen = false;
+
+    controls.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = btn.dataset.action;
+        if (action === "close") {
+          win.classList.add("hidden");
+          const appName = win.dataset.app;
+          appButtons.forEach(b => {
+            if (b.dataset.open === appName) b.classList.remove("active");
+          });
+        } else if (action === "minimize") {
+          win.classList.add("hidden");
+        } else if (action === "maximize") {
+          if (!isFullscreen) {
+            savedBounds = {
+              top: win.style.top,
+              left: win.style.left,
+              width: win.style.width,
+              height: win.style.height,
+              position: win.style.position,
+              borderRadius: win.style.borderRadius,
+              boxShadow: win.style.boxShadow
+            };
+            win.style.position = "fixed";
+            win.style.top = "0";
+            win.style.left = "0";
+            win.style.width = "100%";
+            win.style.height = "100%";
+            win.style.borderRadius = "0";
+            win.style.boxShadow = "none";
+            isFullscreen = true;
+          } else {
+            if (savedBounds) {
+              win.style.position = savedBounds.position || "absolute";
+              win.style.top = savedBounds.top || "12%";
+              win.style.left = savedBounds.left || "10%";
+              win.style.width = savedBounds.width || "min(720px, 92vw)";
+              win.style.height = savedBounds.height || "min(440px, 72vh)";
+              win.style.borderRadius = savedBounds.borderRadius || "12px";
+              win.style.boxShadow = savedBounds.boxShadow || "0 0 26px rgba(0, 255, 106, 0.35)";
+            }
+            isFullscreen = false;
+          }
+          bringToFront(win);
+        }
+      });
+    });
+
+    win.addEventListener("mousedown", () => bringToFront(win));
+  });
+
+  // --- Settings: wallpaper (with saving) ---
+  const wallpaperUrlInput = document.getElementById("wallpaper-url");
+  const applyWallpaperBtn = document.getElementById("apply-wallpaper");
+  const presetButtons = document.querySelectorAll('[data-wallpaper]');
+
+  const WALLPAPER_TYPE_KEY = "uo_wallpaper_type";
+  const WALLPAPER_URL_KEY = "uo_wallpaper_url";
+
+  function setWallpaper(typeOrUrl, isPreset = true, save = true) {
+    if (isPreset) {
+      if (typeOrUrl === "default") {
+        desktop.style.backgroundImage = "";
+        desktop.style.backgroundSize = "";
+        desktop.style.backgroundPosition = "";
+      } else if (typeOrUrl === "grid") {
+        desktop.style.backgroundImage =
+          "radial-gradient(circle at top, #0a1f14 0, #020403 45%, #000 100%), " +
+          "linear-gradient(#0b2a18 1px, transparent 1px), " +
+          "linear-gradient(90deg, #0b2a18 1px, transparent 1px)";
+        desktop.style.backgroundSize = "cover, 40px 40px, 40px 40px";
+        desktop.style.backgroundPosition = "center";
+      } else if (typeOrUrl === "dark") {
+        desktop.style.backgroundImage =
+          "radial-gradient(circle at 20% 0%, #0b2a18 0, #020403 40%, #000 100%)";
+        desktop.style.backgroundSize = "cover";
+        desktop.style.backgroundPosition = "center";
+      }
+      if (save) {
+        localStorage.setItem(WALLPAPER_TYPE_KEY, typeOrUrl);
+        localStorage.removeItem(WALLPAPER_URL_KEY);
+      }
+    } else {
+      desktop.style.backgroundImage = `url("${typeOrUrl}")`;
+      desktop.style.backgroundSize = "cover";
+      desktop.style.backgroundPosition = "center";
+      if (save) {
+        localStorage.setItem(WALLPAPER_TYPE_KEY, "custom");
+        localStorage.setItem(WALLPAPER_URL_KEY, typeOrUrl);
+      }
+    }
+  }
+
+  applyWallpaperBtn.addEventListener("click", () => {
+    const url = wallpaperUrlInput.value.trim();
+    if (url) setWallpaper(url, false, true);
+  });
+
+  presetButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      setWallpaper(btn.dataset.wallpaper, true, true);
+    });
+  });
+
+  (function loadSavedWallpaper() {
+    const type = localStorage.getItem(WALLPAPER_TYPE_KEY);
+    const url = localStorage.getItem(WALLPAPER_URL_KEY);
+    if (type === "custom" && url) {
+      wallpaperUrlInput.value = url;
+      setWallpaper(url, false, false);
+    } else if (type) {
+      setWallpaper(type, true, false);
+    }
+  })();
+
+  // --- Calculator (with saved mode) ---
+  const calcDisplay = document.getElementById("calc-display");
+  const calcKeypad = document.getElementById("calc-keypad");
+  const modeButtons = document.querySelectorAll(".calc-mode-btn");
+
+  const CALC_MODE_KEY = "uo_calc_mode";
+
+  let calcMode = "basic";
+  let calcExpression = "";
+
+  const basicKeys = [
+    "C", "←", "%", "/",
+    "7", "8", "9", "*",
+    "4", "5", "6", "-",
+    "1", "2", "3", "+",
+    "0", ".", "="
+  ];
+
+  const sciKeys = [
+    "C", "←", "(", ")",
+    "sin", "cos", "tan", "/",
+    "7", "8", "9", "*",
+    "4", "5", "6", "-",
+    "1", "2", "3", "+",
+    "0", ".", "^", "="
+  ];
+
+  function renderKeys() {
+    calcKeypad.innerHTML = "";
+    const keys = calcMode === "basic" ? basicKeys : sciKeys;
+    keys.forEach(k => {
+      const btn = document.createElement("button");
+      btn.className = "calc-btn";
+      if (["/", "*", "-", "+", "%", "^"].includes(k)) btn.classList.add("op");
+      if (k === "=") btn.classList.add("equal");
+      if (["sin", "cos", "tan"].includes(k)) btn.classList.add("small");
+      btn.textContent = k;
+      btn.addEventListener("click", () => handleCalcKey(k));
+      calcKeypad.appendChild(btn);
+    });
+  }
+
+  function updateDisplay() {
+    calcDisplay.textContent = calcExpression || "0";
+  }
+
+  function handleCalcKey(key) {
+    if (key === "C") {
+      calcExpression = "";
+    } else if (key === "←") {
+      calcExpression = calcExpression.slice(0, -1);
+    } else if (key === "=") {
+      try {
+        let expr = calcExpression;
+        if (calcMode === "scientific") {
+          expr = expr
+            .replace(/sin\(/g, "Math.sin(")
+            .replace(/cos\(/g, "Math.cos(")
+            .replace(/tan\(/g, "Math.tan(")
+            .replace(/\^/g, "**");
+        }
+        const result = Function("return " + expr)();
+        calcExpression = (result !== undefined && !isNaN(result)) ? String(result) : "";
+      } catch {
+        calcExpression = "Error";
+      }
+    } else {
+      if (calcExpression === "Error") calcExpression = "";
+      if (["sin", "cos", "tan"].includes(key)) {
+        calcExpression += key + "(";
+      } else {
+        calcExpression += key;
+      }
+    }
+    updateDisplay();
+  }
+
+  modeButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const mode = btn.dataset.mode;
+      if (mode !== calcMode) {
+        calcMode = mode;
+        localStorage.setItem(CALC_MODE_KEY, calcMode);
+        modeButtons.forEach(b => b.classList.toggle("active", b.dataset.mode === mode));
+        calcExpression = "";
+        updateDisplay();
+        renderKeys();
+      }
+    });
+  });
+
+  (function loadCalcMode() {
+    const saved = localStorage.getItem(CALC_MODE_KEY);
+    if (saved === "scientific" || saved === "basic") {
+      calcMode = saved;
+    }
+    modeButtons.forEach(b => b.classList.toggle("active", b.dataset.mode === calcMode));
+    renderKeys();
+    updateDisplay();
+  })();
+  
+  /* ============================================================
+   DRAGGABLE + RESIZABLE WINDOWS FOR UNKNOWNs OS
+   ============================================================ */
+windows.forEach(win => {
+  const header = win.querySelector(".window-header");
+  let isDragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  // --- DRAGGING ---
+  header.addEventListener("mousedown", e => {
+    if (win.classList.contains("fullscreen")) return;
+    isDragging = true;
+    win.style.transition = "none";
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    win.style.opacity = "0.92";
+    win.style.boxShadow = "0 0 30px #00ff6a";
+  });
+
+  document.addEventListener("mousemove", e => {
+    if (!isDragging) return;
+    win.style.left = (e.clientX - offsetX) + "px";
+    win.style.top = (e.clientY - offsetY) + "px";
+  });
+
+  document.addEventListener("mouseup", () => {
+    if (isDragging) {
+      win.style.opacity = "1";
+      win.style.boxShadow = "0 0 26px rgba(0,255,106,0.35)";
+    }
+    isDragging = false;
+  });
+
+  // --- RESIZING ---
+  win.style.resize = "both";
+  win.style.overflow = "hidden";
+  win.style.minWidth = "260px";
+  win.style.minHeight = "160px";
+});
+
+
+/* ============================================================
+   ANNOUNCEMENT BAR (with saved close state)
+   ============================================================ */
+const announcementBar = document.getElementById("announcement-bar");
+const announcementClose = document.getElementById("announcement-close");
+const ANNOUNCEMENT_KEY = "uo_announcement_closed_v1";
+
+// Show announcement only if not closed before
+if (!localStorage.getItem(ANNOUNCEMENT_KEY)) {
+  announcementBar.style.display = "block";
+}
+
+announcementClose.addEventListener("click", () => {
+  announcementBar.style.display = "none";
+  localStorage.setItem(ANNOUNCEMENT_KEY, "true");
+});
+
+
+/* ============================================================
+   REAL WEATHER + TEMPERATURE + LOCATION
+   ============================================================ */
+
+function updateRealWeather() {
+  if (!navigator.geolocation) {
+    console.warn("Geolocation not supported.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+
+    try {
+      // Fetch weather
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      const weather = data.current_weather;
+
+      // Convert weather code → readable text
+      const weatherNames = {
+        0: "Clear",
+        1: "Mainly Clear",
+        2: "Partly Cloudy",
+        3: "Cloudy",
+        45: "Fog",
+        48: "Fog",
+        51: "Light Drizzle",
+        61: "Rain",
+        71: "Snow",
+        80: "Rain Showers",
+        95: "Thunderstorm"
+      };
+
+      const desc = weatherNames[weather.weathercode] || "Weather";
+
+      // Update UI
+      document.getElementById("weather-main").textContent = desc;
+      document.getElementById("weather-temp").textContent = weather.temperature + "°F";
+
+      // Reverse‑geocode city name
+      const geoRes = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+      );
+      const geoData = await geoRes.json();
+
+      const city = geoData.address.city ||
+                   geoData.address.town ||
+                   geoData.address.village ||
+                   geoData.address.county ||
+                   "Your Area";
+
+      document.getElementById("weather-extra").textContent =
+        `${city} • ${desc}`;
+
+    } catch (err) {
+      console.error("Weather fetch failed:", err);
+    }
+  }, err => {
+    console.warn("User denied location.");
+  });
+}
+
+updateRealWeather();
+
+          console.log("Unknowns OS SVG loaded");
+        </script>
+      </body>
+    </html>
+  </foreignObject>
+</svg>
